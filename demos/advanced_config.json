@@ -1,0 +1,93 @@
+{
+  "project_metadata": {
+    "codemosaic_version": "2.8.1",
+    "config_schema": "v3",
+    "description": "Advanced configuration for AST-driven template generation"
+  },
+
+  "optimization_settings": {
+    "complexity_threshold": 15,
+    "heuristic_strategies": [
+      "dead_code_elimination",
+      "constant_folding",
+      "pattern_caching"
+    ],
+    "parallel_processing": {
+      "enabled": true,
+      "worker_threads": 8
+    }
+  },
+
+  "ast_pattern_registry": [
+    {
+      "pattern_id": "ctrl_flow:for_loop_optimize",
+      "target_languages": ["JavaScript", "TypeScript", "Python"],
+      "matching_rules": [
+        {
+          "node_type": "ForStatement",
+          "constraints": {
+            "child_nodes": {
+              "body": {
+                "node_count": { "$gt": 3 }
+              }
+            }
+          }
+        }
+      ],
+      "rewrite_template": "core_templates/optimized_for_loop.cmt"
+    },
+    {
+      "pattern_id": "error_handling:promise_chain",
+      "target_languages": ["JavaScript", "TypeScript"],
+      "matching_rules": [
+        {
+          "node_type": "CallExpression",
+          "constraints": {
+            "callee": {
+              "property_name": "then",
+              "chain_depth": { "$gte": 3 }
+            }
+          }
+        }
+      ],
+      "rewrite_template": "error_handling/async_await.cmt"
+    }
+  ],
+
+  "template_parameters": {
+    "naming_conventions": {
+      "variables": "camelCase",
+      "constants": "UPPER_SNAKE_CASE",
+      "functions": "descriptiveCamelCase"
+    },
+    "documentation": {
+      "auto_generate": true,
+      "style": "JSDoc",
+      "strict_params": true
+    }
+  },
+
+  "validation_rules": {
+    "strict_mode": true,
+    "security_checks": {
+      "injection_vulnerabilities": {
+        "enabled": true,
+        "severity_level": "high"
+      },
+      "memory_management": {
+        "enabled": false
+      }
+    }
+  },
+
+  "advanced_directives": {
+    "cache_strategy": {
+      "max_entries": 500,
+      "eviction_policy": "LRU"
+    },
+    "experimental_features": {
+      "neural_pattern_matching": false,
+      "vectorized_processing": true
+    }
+  }
+}
